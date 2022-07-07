@@ -31,11 +31,14 @@ public class MyNetworkPlayer : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSetMyName(string newDisplayName)
-    {
+    public void CmdSetDisplayName(string newDisplayName)
+    {             
+        RpcLogNewName(newDisplayName);
+        
         SetDisplayName(newDisplayName);
     }
     #endregion
+
 
     #region Client
     public void HandleDisplayNameUpdated(string oldName, string newName)
@@ -47,10 +50,16 @@ public class MyNetworkPlayer : NetworkBehaviour
         displayColorRenderer.material.SetColor("_BaseColor", newColor);
     }
 
+    [ClientRpc]
+    public void RpcLogNewName (string newDisplayName)
+    {
+        Debug.Log(newDisplayName);
+    }
+
     [ContextMenu ("Set My Name")]
     private void SetMyName()
     {
-        CmdSetMyName("Fitransyah Rusman");
+        CmdSetDisplayName("Fitransyah Rusman");
     }
     #endregion
 
