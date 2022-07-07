@@ -10,8 +10,16 @@ public class MyNetworkManager : NetworkManager
         base.OnServerAddPlayer(conn);
 
         MyNetworkPlayer player =  conn.identity.GetComponent<MyNetworkPlayer>();
+        
         player.SetDisplayName($"Player {numPlayers}");
-        player.SetDisplayColor(new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
+        
+        Color displayColor = new Color(
+            Random.Range(0f, 1f),
+            Random.Range(0f, 1f),
+            Random.Range(0f, 1f));
+        
+        player.SetDisplayColor(displayColor);
+
         Debug.Log($"There are {numPlayers} players");
         
     }

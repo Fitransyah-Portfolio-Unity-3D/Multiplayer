@@ -8,7 +8,7 @@ public class MyNetworkPlayer : NetworkBehaviour
 {
     [SerializeField] private TMP_Text displayNametext = null;
     [SerializeField] private Renderer displayColorRenderer = null;
-    
+    [SerializeField] private string requestedName;
     [SyncVar(hook = nameof(HandleDisplayNameUpdated))]
     [SerializeField]
     private string displayName = "Missing name";
@@ -21,6 +21,8 @@ public class MyNetworkPlayer : NetworkBehaviour
     [Server]
     public void SetDisplayName(string newDisplayName)
     {
+        // have server authority here
+
         displayName = newDisplayName;
     }
 
@@ -32,10 +34,19 @@ public class MyNetworkPlayer : NetworkBehaviour
 
     [Command]
     public void CmdSetDisplayName(string newDisplayName)
-    {             
-        RpcLogNewName(newDisplayName);
-        
-        SetDisplayName(newDisplayName);
+    {
+        // have server authority here
+
+        if (newDisplayName.Length >= 5) 
+        {
+            Debug.Log("Name is too long");
+            return; 
+        }
+        else
+        {
+            RpcLogNewName(newDisplayName);
+            SetDisplayName(newDisplayName);
+        }
     }
     #endregion
 
@@ -59,7 +70,7 @@ public class MyNetworkPlayer : NetworkBehaviour
     [ContextMenu ("Set My Name")]
     private void SetMyName()
     {
-        CmdSetDisplayName("Fitransyah Rusman");
+        CmdSetDisplayName(requestedName);
     }
     #endregion
 
