@@ -9,8 +9,10 @@ public class MyNetworkManager : NetworkManager
     {
         base.OnServerAddPlayer(conn);
 
+        // grabbing player component when entering server
         MyNetworkPlayer player =  conn.identity.GetComponent<MyNetworkPlayer>();
-        
+
+        #region Player Setting on Starting Game
         player.SetDisplayName($"Player {numPlayers}");
         
         Color displayColor = new Color(
@@ -21,6 +23,6 @@ public class MyNetworkManager : NetworkManager
         player.SetDisplayColor(displayColor);
 
         Debug.Log($"There are {numPlayers} players");
-        
+        #endregion
     }
 }
